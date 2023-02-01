@@ -2,9 +2,7 @@ import { useParcel } from "../lib/hooks";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-type Props = {};
-
-export default function Parcels(params: Props) {
+export default function Parcels() {
   const router = useRouter();
   const { q } = router.query;
   const { findMany } = useParcel();

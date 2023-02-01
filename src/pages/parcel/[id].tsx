@@ -1,8 +1,7 @@
 import { useParcel } from "../../lib/hooks";
 import { useRouter } from "next/router";
-type Props = {};
 
-export default function Parcels(params: Props) {
+export default function Parcels() {
   const router = useRouter();
   const { id } = router.query;
   const { findUnique } = useParcel();
