@@ -8,7 +8,7 @@ export default async function handler(
 ) {
   const { q } = req.query;
   //Find the absolute path of the json directory
-  const directory = path.join(process.cwd(), q?.toString() || "");
+  const directory = path.join(__dirname, q?.toString() || "");
   //Read the json data file data.json
   const files = await fs.readdir(directory);
   //Return the content of the data file in json format
