@@ -15,7 +15,7 @@ export default function Parcels() {
       <ul>
         {parcels?.map((parcel) => {
           return (
-            <li>
+            <li key={parcel.id}>
               <Link href={"/parcel/" + parcel.id}>{parcel.id}</Link>{" "}
               <span className="bg-yellow-100 text-red-900">
                 {parcel.address}{" "}
