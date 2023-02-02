@@ -1,6 +1,7 @@
 import path from "path";
 import { promises as fs } from "fs";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { cwd } from "process";
 
 export default async function handler(
   req: NextApiRequest,
@@ -8,7 +9,7 @@ export default async function handler(
 ) {
   const { q } = req.query;
   //Find the absolute path of the json directory
-  const directory = path.join(__dirname, q?.toString() || "");
+  const directory = path.join(cwd(), q?.toString() || "");
   //Read the json data file data.json
   const files = await fs.readdir(directory);
   //Return the content of the data file in json format
