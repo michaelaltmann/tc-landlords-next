@@ -7,9 +7,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { q } = req.query;
+  const { q, d } = req.query;
   //Find the absolute path of the json directory
-  const directory = path.join(cwd(), q?.toString() || "");
+  const root = d ? __dirname : cwd();
+  const directory = path.join(root, q?.toString() || "");
   //Read the json data file data.json
   const files = await fs.readdir(directory);
   //Return the content of the data file in json format
