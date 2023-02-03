@@ -7,7 +7,10 @@ export default function Parcels() {
   const { q } = router.query;
   const { findMany } = useParcel();
   const { data: parcels } = q
-    ? findMany({ where: { address: { contains: q.toString() } } })
+    ? findMany({
+        where: { address: { contains: q.toString(), mode: "insensitive" } },
+        take: 100,
+      })
     : findMany({});
   return (
     <div className="ml-8">

@@ -5,7 +5,9 @@ export default function Parcels() {
   const router = useRouter();
   const { id } = router.query;
   const { findUnique } = useParcel();
-  const { data: parcel } = findUnique({ where: { id: id?.toString() } });
+  const { data: parcel } = findUnique({
+    where: { id: id?.toString().toUpperCase() },
+  });
 
   return (
     <div className="ml-8">
