@@ -22,6 +22,10 @@ export function useParcel() {
         }
     }
 
+    async function createMany<T extends Prisma.ParcelCreateManyArgs>(args: Prisma.SelectSubset<T, Prisma.ParcelCreateManyArgs>) {
+        return await request.post<Prisma.SelectSubset<T, Prisma.ParcelCreateManyArgs>, Prisma.BatchPayload>(`${endpoint}/parcel/createMany`, args, mutate);
+    }
+
     function findMany<T extends Prisma.ParcelFindManyArgs>(args?: Prisma.SelectSubset<T, Prisma.ParcelFindManyArgs>, options?: RequestOptions<Array<Prisma.ParcelGetPayload<T>>>) {
         return request.get<Array<Prisma.ParcelGetPayload<T>>>(`${endpoint}/parcel/findMany`, args, options);
     }
@@ -129,5 +133,5 @@ export function useParcel() {
         }[OrderFields]>(args: Prisma.SubsetIntersection<T, Prisma.ParcelGroupByArgs, OrderByArg> & InputErrors, options?: RequestOptions<{} extends InputErrors ? Prisma.GetParcelGroupByPayload<T> : InputErrors>) {
         return request.get<{} extends InputErrors ? Prisma.GetParcelGroupByPayload<T> : InputErrors>(`${endpoint}/parcel/groupBy`, args, options);
     }
-    return { create, findMany, findUnique, findFirst, update, updateMany, upsert, del, deleteMany, aggregate, groupBy };
+    return { create, createMany, findMany, findUnique, findFirst, update, updateMany, upsert, del, deleteMany, aggregate, groupBy };
 }
