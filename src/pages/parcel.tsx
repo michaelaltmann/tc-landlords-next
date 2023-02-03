@@ -26,6 +26,7 @@ export default function Parcels() {
             </li>
           );
         })}
+        {!parcels && <>Loading ...</>}
       </ul>
     </div>
   );
