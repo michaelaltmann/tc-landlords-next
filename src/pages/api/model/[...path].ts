@@ -3,7 +3,7 @@ import { requestHandler } from "@zenstackhq/next";
 import type { NextApiRequest, NextApiResponse } from "next";
 //import { getServerAuthSession } from "../../../server/auth";
 import { prisma } from "../../../server/db";
-async function getPrisma(req: NextApiRequest, res: NextApiResponse) {
+function getPrisma() {
   console.log("getPrisma");
   //  const session = await getServerAuthSession({ req, res });
   // create a wrapper of Prisma client that enforces access policy,
