@@ -5,13 +5,13 @@ import { useState } from "react";
 export default function Parcels() {
   const [s, setS] = useState("");
   const { findMany } = useParcel();
-  const { data: parcels } =
-    s && s?.length > 4
-      ? findMany({
-          where: { address: { contains: s, mode: "insensitive" } },
-          take: 100,
-        })
-      : findMany({});
+  const readyToSearch = s && s?.length > 4;
+  const { data: parcels } = readyToSearch
+    ? findMany({
+        where: { address: { contains: s, mode: "insensitive" } },
+        take: 100,
+      })
+    : findMany({});
   return (
     <div className="ml-8">
       <div className="text-center text-xl">
@@ -36,7 +36,8 @@ export default function Parcels() {
             </li>
           );
         })}
-        {!parcels && <>Loading ...</>}
+        {readyToSearch && !parcels && <>Loading ...</>}
+        {!readyToSearch && <>Enter a search (at least 4 chars)</>}
       </ul>
     </div>
   );
