@@ -1,7 +1,7 @@
 import { useParcel } from "../../lib/hooks";
 import { useRouter } from "next/router";
 
-export default function Parcels() {
+export default function Parcel() {
   const router = useRouter();
   const { id } = router.query;
   const { findUnique } = useParcel();

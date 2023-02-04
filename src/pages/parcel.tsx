@@ -1,20 +1,30 @@
 import { useParcel } from "../lib/hooks";
-import { useRouter } from "next/router";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Parcels() {
-  const router = useRouter();
-  const { q } = router.query;
+  const [s, setS] = useState("");
   const { findMany } = useParcel();
-  const { data: parcels } = q
-    ? findMany({
-        where: { address: { contains: q.toString(), mode: "insensitive" } },
-        take: 100,
-      })
-    : findMany({});
+  const { data: parcels } =
+    s && s?.length > 4
+      ? findMany({
+          where: { address: { contains: s, mode: "insensitive" } },
+          take: 100,
+        })
+      : findMany({});
   return (
     <div className="ml-8">
-      <div className="text-center text-xl">Parcels matching {q}</div>
+      <div className="text-center text-xl">
+        Parcels matching:{" "}
+        <input
+          type="text"
+          minLength={40}
+          className="bg-gray-300"
+          onBlur={(e) => {
+            setS(e.target.value);
+          }}
+        ></input>
+      </div>
       <ul>
         {parcels?.map((parcel) => {
           return (
