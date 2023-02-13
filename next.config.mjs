@@ -14,5 +14,14 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/parcels',
+        permanent: true,
+      },
+    ]
+  },
 };
 export default config;

@@ -19,6 +19,26 @@ model Parcel {
     homestead Boolean
     lat Float?
     lon Float?
+    tags Tag[]
+    keywords Keyword[]
+}
+
+/// @@allow('all', true)
+model Tag {
+    id Int @id()
+    parcel_id String
+    source_type String
+    tag_type String
+    tag_value String
+    parcel Parcel @relation(fields: [parcel_id], references: [id], onDelete: Cascade)
+}
+
+/// @@allow('all', true)
+model Keyword {
+    id Int @id()
+    parcel_id String
+    phrase String
+    parcel Parcel @relation(fields: [parcel_id], references: [id], onDelete: Cascade)
 }
 
 model Account {

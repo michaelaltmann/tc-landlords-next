@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 
 import { env } from "../env/server.mjs";
 
@@ -10,5 +10,17 @@ export const prisma =
     log:
       env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
   });
+
+const logQueryDuration: Prisma.Middleware = async (params, next) => {
+  const before = Date.now();
+  console.log(`Querying ${params.model}.${params.action}`);
+  const result = await next(params);
+  const after = Date.now();
+  console.log(
+    `Query ${params.model}.${params.action} took ${after - before}ms`
+  );
+  return result;
+};
+prisma.$use(logQueryDuration);
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
