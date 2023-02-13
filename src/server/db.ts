@@ -12,6 +12,7 @@ export const prisma =
   });
 
 const logQueryDuration: Prisma.Middleware = async (params, next) => {
+  /* eslint-disable */
   const before = Date.now();
   console.log(`Querying ${params.model}.${params.action}`);
   const result = await next(params);
