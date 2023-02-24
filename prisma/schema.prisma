@@ -24,6 +24,8 @@ model Parcel {
     lat Float?
     lon Float?
     /// @length(0, 200)
+    taxpayer_name String?
+    /// @length(0, 200)
     owner_name String?
     /// @length(0, 200)
     owner_address String?
@@ -36,6 +38,8 @@ model Parcel {
     zenstack_transaction String?
     @@index([zenstack_transaction])
     @@index([address])
+    @@index([portfolio_id])
+    @@index([portfolio_size])
 }
 
 /// @@allow('all', true)
@@ -43,6 +47,7 @@ model Tag {
     id Int @id()
     parcel_id String
     source_type String
+    source_value String
     tag_type String
     /// @length(1, 200)
     tag_value String

@@ -13,6 +13,8 @@ async function seed() {
       homestead: false,
       lat: 45.38665285816786,
       lon: -93.39843984950384,
+      portfolio_id: 1,
+      portfolio_size: 12,
     },
     {
       id: "US-MN-27003-363425410007",
@@ -20,6 +22,8 @@ async function seed() {
       homestead: true,
       lat: 45.38938583142575,
       lon: -93.38901328410914,
+      portfolio_id: 2,
+      portfolio_size: 34,
     },
   ];
 

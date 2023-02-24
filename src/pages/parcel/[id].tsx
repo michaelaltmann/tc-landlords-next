@@ -48,7 +48,7 @@ export default function Parcel() {
             ))}
         </ul>
         <div className="text-center text-xl">
-          Owner's Parcels ({parcels?.length})
+          Owner&apos;s Parcels ({parcels?.length})
         </div>
         <ul>
           {!parcels && "Loading ..."}

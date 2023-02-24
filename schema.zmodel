@@ -27,6 +27,7 @@ model Parcel {
     county_pid String?
     lat       Float?
     lon       Float?
+    taxpayer_name   String? @length(0, 200)
     owner_name   String? @length(0, 200)
     owner_address   String? @length(0, 200)
     use_class   String?
@@ -36,6 +37,8 @@ model Parcel {
     keywords Keyword[]
     @@allow('all', true)
     @@index([address])
+    @@index([portfolio_id])
+    @@index([portfolio_size])
 }
 
 
@@ -43,6 +46,7 @@ model Tag {
     id        Int  @id
     parcel_id  String
     source_type String
+    source_value String
     tag_type String
     tag_value String @length(1, 200)
     parcel Parcel @relation(fields: [parcel_id], references: [id], onDelete: Cascade)
