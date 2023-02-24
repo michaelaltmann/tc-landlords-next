@@ -15,12 +15,27 @@ generator client {
 /// @@allow('all', true)
 model Parcel {
     id String @id()
+    /// @length(1, 200)
     address String
-    homestead Boolean
+    homestead Boolean @default(false)
+    license_num String?
+    county String?
+    county_pid String?
     lat Float?
     lon Float?
+    /// @length(0, 200)
+    owner_name String?
+    /// @length(0, 200)
+    owner_address String?
+    use_class String?
+    portfolio_id Int
+    portfolio_size Int
     tags Tag[]
     keywords Keyword[]
+    zenstack_guard Boolean @default(true)
+    zenstack_transaction String?
+    @@index([zenstack_transaction])
+    @@index([address])
 }
 
 /// @@allow('all', true)
@@ -29,16 +44,28 @@ model Tag {
     parcel_id String
     source_type String
     tag_type String
+    /// @length(1, 200)
     tag_value String
     parcel Parcel @relation(fields: [parcel_id], references: [id], onDelete: Cascade)
+    zenstack_guard Boolean @default(true)
+    zenstack_transaction String?
+    @@index([zenstack_transaction])
+    @@index([tag_value])
+    @@index([parcel_id])
 }
 
 /// @@allow('all', true)
 model Keyword {
     id Int @id()
     parcel_id String
+    /// @length(1, 200)
     phrase String
     parcel Parcel @relation(fields: [parcel_id], references: [id], onDelete: Cascade)
+    zenstack_guard Boolean @default(true)
+    zenstack_transaction String?
+    @@index([zenstack_transaction])
+    @@index([phrase])
+    @@index([parcel_id])
 }
 
 model Account {

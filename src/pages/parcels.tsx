@@ -1,12 +1,16 @@
 import { useParcel } from "../lib/hooks";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 type SeachResultsPrams = { s: string };
 function SearchResults(params: SeachResultsPrams) {
+  useEffect(() => {
+    console.log("Use effect");
+  });
   const { s } = params;
   const Parcel = useParcel();
   function search() {
+    console.log(`searching for ${s}`);
     const byParcelId = {
       id: { startsWith: `US-MN-${s}` },
     };
@@ -44,13 +48,15 @@ function SearchResults(params: SeachResultsPrams) {
             return (
               <li key={parcel.id}>
                 <Link
-                  className="text-blue-600 underline"
+                  className="font-mono text-blue-600 underline"
                   href={"/parcel/" + parcel.id}
                 >
                   {parcel.id}
                 </Link>{" "}
-                <span className="bg-yellow-100 text-red-900">
-                  {parcel.address}{" "}
+                <span className="">{parcel.address}</span>
+                {"  "}
+                <span className="text-sm">
+                  <i>{parcel.owner_name}</i>
                 </span>
               </li>
             );
@@ -63,6 +69,36 @@ function SearchResults(params: SeachResultsPrams) {
   } else {
     return <>Loading ...</>;
   }
+}
+
+function LargePortfolios() {
+  const { data: sampleParcels } = useParcel().findMany({
+    take: 10,
+    where: {
+      AND: [{ portfolio_size: { gt: 50 } }, { portfolio_size: { lt: 60 } }],
+    },
+  });
+  return (
+    <ul>
+      {sampleParcels?.map((parcel) => {
+        return (
+          <li key={parcel.id}>
+            <Link
+              className="font-mono text-blue-600 underline"
+              href={"/parcel/" + parcel.id}
+            >
+              {parcel.id}
+            </Link>{" "}
+            <span className="">{parcel.address}</span>
+            {"  "}
+            <span className="text-sm">
+              <i>{parcel.owner_name}</i>
+            </span>
+          </li>
+        );
+      })}
+    </ul>
+  );
 }
 
 export default function Parcels() {
@@ -81,10 +117,21 @@ export default function Parcels() {
           onBlur={(e) => {
             setQuery(e.target.value);
           }}
+          onKeyUp={(e) => {
+            if (e.key === "Enter") {
+              setQuery(e.currentTarget.value);
+            }
+          }}
         ></input>
       </div>
       {readyToSearch && <SearchResults s={query.toUpperCase()} />}
-      {!readyToSearch && <>Enter a search phrase (at least 4 chars)</>}
+      {!readyToSearch && (
+        <>
+          Enter a search phrase (at least 4 chars)
+          <h4>Sample Parcels from Large Portfolios</h4>
+          <LargePortfolios />
+        </>
+      )}
     </div>
   );
 }

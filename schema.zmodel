@@ -20,13 +20,22 @@ datasource db {
 
 model Parcel {
     id        String  @id
-    address   String
-    homestead Boolean
+    address   String @length(1, 200) 
+    homestead Boolean @default(false)
+    license_num String?
+    county String?
+    county_pid String?
     lat       Float?
     lon       Float?
-    tags    Tag[]
+    owner_name   String? @length(0, 200)
+    owner_address   String? @length(0, 200)
+    use_class   String?
+    portfolio_id   Int 
+    portfolio_size   Int 
+        tags    Tag[]
     keywords Keyword[]
     @@allow('all', true)
+    @@index([address])
 }
 
 
@@ -35,16 +44,20 @@ model Tag {
     parcel_id  String
     source_type String
     tag_type String
-    tag_value String
+    tag_value String @length(1, 200)
     parcel Parcel @relation(fields: [parcel_id], references: [id], onDelete: Cascade)
     @@allow('all', true)
+    @@index([tag_value])
+    @@index([parcel_id])
 }
 model Keyword {
     id        Int  @id
     parcel_id  String
-    phrase String
+    phrase String @length(1, 200)
     parcel Parcel @relation(fields: [parcel_id], references: [id], onDelete: Cascade)
     @@allow('all', true)
+    @@index([phrase])
+    @@index([parcel_id])
 }
 
 
