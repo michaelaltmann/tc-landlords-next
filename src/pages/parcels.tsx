@@ -1,38 +1,38 @@
 import { useParcel } from "../lib/hooks";
+
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Parcel from "../components/Parcel";
+
 type SeachResultsPrams = { s: string };
 function SearchResults(params: SeachResultsPrams) {
   const { s } = params;
-  function search() {
-    const byParcelId = {
-      id: { startsWith: `US-MN-${s}` },
-    };
-    const byAddress = { address: { startsWith: s } };
-    const words: string[] = s.split(" ").filter((word) => word.length > 2);
-    const fragments = words.map((word: string) => {
-      const fragment = {
-        keywords: {
-          some: {
-            phrase: {
-              startsWith: word,
-            },
+
+  const byParcelId = {
+    id: { startsWith: `US-MN-${s}` },
+  };
+  const byAddress = { address: { startsWith: s } };
+  const words: string[] = s.split(" ").filter((word) => word.length > 2);
+  const fragments = words.map((word: string) => {
+    const fragment = {
+      keywords: {
+        some: {
+          phrase: {
+            startsWith: word,
           },
         },
-      };
-      return fragment;
-    });
-    const byKeyword = { AND: fragments };
-    return useParcel().findMany({
-      where: {
-        OR: [byParcelId, byAddress, byKeyword],
       },
-      take: 100,
-    });
-  }
+    };
+    return fragment;
+  });
+  const byKeyword = { AND: fragments };
+  const res = useParcel().findMany({
+    where: {
+      OR: [byParcelId, byAddress, byKeyword],
+    },
+    take: 100,
+  });
 
-  const res = search();
   const parcels = res?.data;
 
   if (parcels) {
@@ -40,7 +40,7 @@ function SearchResults(params: SeachResultsPrams) {
       return (
         <ul>
           {parcels?.map((parcel) => {
-            return <Parcel parcel={parcel} />;
+            return <Parcel parcel={parcel} key={parcel.id} />;
           })}
         </ul>
       );

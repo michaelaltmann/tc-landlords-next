@@ -1,4 +1,4 @@
-import { useParcel, useKeyword, useTag } from "../../lib/hooks";
+import { useParcel, useKeyword } from "../../lib/hooks";
 import { useRouter } from "next/router";
 import Portfolio from "../../components/Portfolio";
 

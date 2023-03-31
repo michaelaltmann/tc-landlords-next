@@ -8,7 +8,7 @@ function Header() {
           <img src="/favicon-32x32.png" width="30" height="30" />
         </Link>
         <span className="text-xl font-semibold tracking-tight">
-          Twin Cities Renter's Resources
+          Twin Cities Renter&apos;s Resources
         </span>
       </div>
     </nav>

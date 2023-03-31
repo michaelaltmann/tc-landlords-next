@@ -1,6 +1,8 @@
+import type { Parcel } from "@prisma/client";
 import Link from "next/link";
+type ParcelPrams = { parcel: Parcel };
 
-export default function Parcel({ parcel }: any) {
+export default function ParcelView({ parcel }: ParcelPrams) {
   return (
     <li key={parcel.id}>
       <Link

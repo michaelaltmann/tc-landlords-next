@@ -1,7 +1,9 @@
-import Parcel from "./Parcel";
+import ParcelView from "./Parcel";
+import type { Parcel } from "@prisma/client";
 import { useParcel } from "../lib/hooks";
+type ParcelPrams = { parcel: Parcel };
 
-export default function Portfolio({ parcel }: any) {
+export default function Portfolio({ parcel }: ParcelPrams) {
   const { data: parcels } = useParcel().findMany({
     where: { portfolio_id: parcel?.portfolio_id },
   });
@@ -12,7 +14,7 @@ export default function Portfolio({ parcel }: any) {
       </div>
       <ul>
         {!parcels && "Loading ..."}
-        {parcels && parcels.map((p) => <Parcel parcel={p} />)}
+        {parcels && parcels.map((p) => <ParcelView parcel={p} key={p.id} />)}
       </ul>
     </>
   );
