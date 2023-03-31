@@ -1,16 +1,11 @@
 import { useParcel } from "../lib/hooks";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-
+import Parcel from "../components/Parcel";
 type SeachResultsPrams = { s: string };
 function SearchResults(params: SeachResultsPrams) {
-  useEffect(() => {
-    console.log("Use effect");
-  });
   const { s } = params;
-  const Parcel = useParcel();
   function search() {
-    console.log(`searching for ${s}`);
     const byParcelId = {
       id: { startsWith: `US-MN-${s}` },
     };
@@ -29,7 +24,7 @@ function SearchResults(params: SeachResultsPrams) {
       return fragment;
     });
     const byKeyword = { AND: fragments };
-    return Parcel.findMany({
+    return useParcel().findMany({
       where: {
         OR: [byParcelId, byAddress, byKeyword],
       },
@@ -45,21 +40,7 @@ function SearchResults(params: SeachResultsPrams) {
       return (
         <ul>
           {parcels?.map((parcel) => {
-            return (
-              <li key={parcel.id}>
-                <Link
-                  className="font-mono text-blue-600 underline"
-                  href={"/parcel/" + parcel.id}
-                >
-                  {parcel.id}
-                </Link>{" "}
-                <span className="">{parcel.address}</span>
-                {"  "}
-                <span className="text-sm">
-                  <i>{parcel.owner_name}</i>
-                </span>
-              </li>
-            );
+            return <Parcel parcel={parcel} />;
           })}
         </ul>
       );
@@ -107,7 +88,7 @@ export default function Parcels() {
   const readyToSearch = query && query?.length >= 4;
 
   return (
-    <div className="ml-8">
+    <div className="ml-8 mt-1">
       <div className="text-center text-xl">
         Parcels matching:{" "}
         <input
