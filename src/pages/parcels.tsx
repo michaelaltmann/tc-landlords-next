@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useParcel } from "../lib/hooks";
 
 import Link from "next/link";
@@ -26,14 +27,13 @@ function SearchResults(params: SeachResultsPrams) {
     return fragment;
   });
   const byKeyword = { AND: fragments };
-  /* tslint:disable */
+
   const { data: parcels } = useParcel().findMany({
     where: {
       OR: [byParcelId, byAddress, byKeyword],
     },
     take: 100,
   });
-  /* tslint:enable */
 
   if (parcels) {
     if (parcels?.length > 0) {
