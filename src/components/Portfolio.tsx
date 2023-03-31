@@ -25,4 +25,5 @@ export default function Portfolio({ parcel }: ParcelPrams) {
     );
   }
   if (mode === "LIST") return <ListView />;
+  else return <>Unknown view mode</>;
 }
