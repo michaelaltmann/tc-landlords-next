@@ -5,7 +5,12 @@ function Header() {
     <nav className="flex flex-wrap items-center justify-between bg-teal-500 p-6">
       <div className="flex flex-shrink-0 items-center text-white">
         <Link className="ml-2 mr-2" href={"/parcels"}>
-          <img src="/favicon-32x32.png" width="30" height="30" />
+          <img
+            src="/favicon-32x32.png"
+            width="30"
+            height="30"
+            alt="house icon"
+          />
         </Link>
         <span className="text-xl font-semibold tracking-tight">
           Twin Cities Renter&apos;s Resources

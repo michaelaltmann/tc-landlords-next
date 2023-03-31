@@ -26,14 +26,13 @@ function SearchResults(params: SeachResultsPrams) {
     return fragment;
   });
   const byKeyword = { AND: fragments };
-  const res = useParcel().findMany({
+  /* tslint:disable-next-line */
+  const { data: parcels } = useParcel().findMany({
     where: {
       OR: [byParcelId, byAddress, byKeyword],
     },
     take: 100,
   });
-
-  const parcels = res?.data;
 
   if (parcels) {
     if (parcels?.length > 0) {
