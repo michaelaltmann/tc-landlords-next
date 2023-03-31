@@ -109,7 +109,6 @@ export default function Parcels() {
       {readyToSearch && <SearchResults s={query.toUpperCase()} />}
       {!readyToSearch && (
         <>
-          Enter a search phrase (at least 4 chars)
           <h4>Sample Parcels from Large Portfolios</h4>
           <LargePortfolios />
         </>
