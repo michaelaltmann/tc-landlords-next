@@ -1,7 +1,11 @@
 import ParcelView from "./Parcel";
 import type { Parcel } from "@prisma/client";
 import { useParcel } from "../lib/hooks";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+// eslint-disable-line import/no-webpack-loader-syntax
+import mapboxgl from "mapbox-gl";
+mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || "";
+
 type ParcelPrams = { parcel: Parcel };
 
 export default function Portfolio({ parcel }: ParcelPrams) {
@@ -26,6 +30,72 @@ export default function Portfolio({ parcel }: ParcelPrams) {
     );
   }
 
+  function MapView() {
+    const mapContainer = useRef(null);
+
+    const [lng, setLng] = useState(-93.26);
+    const [lat, setLat] = useState(44.97);
+    const [zoom, setZoom] = useState(9);
+    function buildLayer(m: mapboxgl.Map) {
+      console.log("Building ");
+      const features = (parcels || []).map((parcel) => {
+        const feature = {
+          type: "Feature" as const,
+          properties: parcel,
+          geometry: {
+            type: "Point" as const,
+            coordinates: [parcel.lon as number, parcel.lat as number],
+          },
+        };
+        return feature;
+      });
+      m.addSource("portfolio", {
+        type: "geojson",
+        data: {
+          type: "FeatureCollection" as const,
+          features: features,
+        },
+        generateId: true,
+      });
+      m.addLayer({
+        id: "portfolio",
+        type: "circle",
+        source: "portfolio",
+        paint: {
+          "circle-radius": 6,
+          "circle-stroke-color": "black",
+          "circle-stroke-width": 1,
+          "circle-color": [
+            "case",
+            ["boolean", ["feature-state", "hover"], false],
+            "lightGreen",
+            "darkGreen",
+          ],
+        },
+      });
+    }
+    useEffect(() => {
+      const node = mapContainer.current;
+      if (typeof window === "undefined" || node === null) return;
+
+      const mapboxMap = new mapboxgl.Map({
+        container: node,
+        style: "mapbox://styles/mapbox/streets-v12",
+        center: [lng, lat],
+        zoom: zoom,
+      });
+      mapboxMap.on("load", () => buildLayer(mapboxMap));
+      return () => {
+        mapboxMap.remove();
+      };
+    }, [parcels]);
+
+    return (
+      <>
+        <div ref={mapContainer} style={{ height: "600px" }} />
+      </>
+    );
+  }
   function buildTabHeaders() {
     return (
       <div className="border-b border-gray-200 text-center text-sm font-medium text-gray-500 dark:border-gray-700 dark:text-gray-400">
@@ -34,6 +104,7 @@ export default function Portfolio({ parcel }: ParcelPrams) {
             if (tab.toUpperCase() === mode?.toUpperCase())
               return (
                 <li
+                  key={tab}
                   className="mr-2"
                   onClick={() => {
                     setMode(tab);
@@ -51,6 +122,7 @@ export default function Portfolio({ parcel }: ParcelPrams) {
             else
               return (
                 <li
+                  key={tab}
                   className="mr-2"
                   onClick={() => {
                     setMode(tab);
@@ -71,6 +143,7 @@ export default function Portfolio({ parcel }: ParcelPrams) {
   }
   function buildTabs() {
     if (mode?.toUpperCase() === "LIST") return <ListView />;
+    if (mode?.toUpperCase() === "MAP") return <MapView />;
     else return <>Unknown view mode {mode}</>;
   }
   return (
