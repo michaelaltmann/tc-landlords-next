@@ -5,6 +5,7 @@ import { useParcel } from "../lib/hooks";
 import Link from "next/link";
 import { useState } from "react";
 import Parcel from "../components/Parcel";
+import ParcelView from "../components/Parcel";
 
 type SeachResultsPrams = { s: string };
 function SearchResults(params: SeachResultsPrams) {
@@ -63,21 +64,7 @@ function LargePortfolios() {
   return (
     <ul>
       {sampleParcels?.map((parcel) => {
-        return (
-          <li key={parcel.id}>
-            <Link
-              className="font-mono text-blue-600 underline"
-              href={"/parcel/" + parcel.id}
-            >
-              {parcel.id}
-            </Link>{" "}
-            <span className="">{parcel.address}</span>
-            {"  "}
-            <span className="text-sm">
-              <i>{parcel.owner_name}</i>
-            </span>
-          </li>
-        );
+        return <ParcelView key={parcel.id} parcel={parcel} />;
       })}
     </ul>
   );
@@ -109,7 +96,7 @@ export default function Parcels() {
       {readyToSearch && <SearchResults s={query.toUpperCase()} />}
       {!readyToSearch && (
         <>
-          <h4>Sample Parcels from Large Portfolios</h4>
+          <span className="text-lg">Sample Parcels from Large Portfolios</span>
           <LargePortfolios />
         </>
       )}
