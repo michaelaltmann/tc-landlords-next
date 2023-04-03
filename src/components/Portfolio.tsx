@@ -36,6 +36,7 @@ export default function Portfolio({ parcel }: ParcelPrams) {
     const [lng, setLng] = useState(-93.26);
     const [lat, setLat] = useState(44.97);
     const [zoom, setZoom] = useState(9);
+    let selectedFeatureId: string | undefined = "";
     function buildLayer(m: mapboxgl.Map) {
       console.log("Building ");
       const features = (parcels || []).map((parcel) => {
@@ -85,13 +86,46 @@ export default function Portfolio({ parcel }: ParcelPrams) {
         zoom: zoom,
       });
       mapboxMap.on("load", () => buildLayer(mapboxMap));
-      return () => {
-        mapboxMap.remove();
-      };
+
+      mapboxMap.on("mousemove", "portfolio", function (e) {
+        var features = e.features || [];
+        var hover;
+        if (features.length >= 0) {
+          var feature = features[0];
+          hover =
+            '<b> <a href = "property/' +
+            feature?.properties?.parcel_id +
+            '">' +
+            feature?.properties?.address +
+            "</a></b> ";
+          const el = document.getElementById("featureDetail");
+          if (el) el.innerHTML = hover;
+          if (selectedFeatureId) {
+            mapboxMap.removeFeatureState({
+              source: "portfolio",
+              id: selectedFeatureId,
+            });
+          }
+          selectedFeatureId = "" + feature?.id;
+          mapboxMap.setFeatureState(
+            {
+              source: "portfolio",
+              id: selectedFeatureId,
+            },
+            {
+              hover: true,
+            }
+          );
+        }
+        return () => {
+          mapboxMap.remove();
+        };
+      });
     }, [parcels]);
 
     return (
       <>
+        <div id="featureDetail"></div>
         <div ref={mapContainer} style={{ height: "600px" }} />
       </>
     );
