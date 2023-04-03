@@ -2,7 +2,6 @@
 //@ts-nocheck
 import { useParcel } from "../lib/hooks";
 
-import Link from "next/link";
 import { useState } from "react";
 import Parcel from "../components/Parcel";
 import ParcelView from "../components/Parcel";

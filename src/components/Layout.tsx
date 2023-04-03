@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 function Header() {
@@ -5,7 +6,7 @@ function Header() {
     <nav className="flex flex-wrap items-center justify-between bg-teal-500 p-6">
       <div className="flex flex-shrink-0 items-center text-white">
         <Link className="ml-2 mr-2" href={"/parcels"}>
-          <img
+          <Image
             src="/favicon-32x32.png"
             width="30"
             height="30"

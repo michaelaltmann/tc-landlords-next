@@ -88,16 +88,13 @@ export default function Portfolio({ parcel }: ParcelPrams) {
       mapboxMap.on("load", () => buildLayer(mapboxMap));
 
       mapboxMap.on("mousemove", "portfolio", function (e) {
-        var features = e.features || [];
-        var hover;
+        const features = e.features || [];
+        let hover;
         if (features.length >= 0) {
-          var feature = features[0];
-          hover =
-            '<b> <a href = "property/' +
-            feature?.properties?.parcel_id +
-            '">' +
-            feature?.properties?.address +
-            "</a></b> ";
+          const feature = features[0];
+          hover = `<b> <a href = "parcel/${
+            feature?.properties?.parcel_id as string
+          }"> ${feature?.properties?.address as string}</a></b> `;
           const el = document.getElementById("featureDetail");
           if (el) el.innerHTML = hover;
           if (selectedFeatureId) {
@@ -106,7 +103,7 @@ export default function Portfolio({ parcel }: ParcelPrams) {
               id: selectedFeatureId,
             });
           }
-          selectedFeatureId = "" + feature?.id;
+          selectedFeatureId = feature?.id as string;
           mapboxMap.setFeatureState(
             {
               source: "portfolio",
